@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visma task - personal calendar</title>
+    <link type="text/css" rel="stylesheet" href="css/desktop.css" />
+    <link type="text/css" rel="stylesheet" href="css/mobile.css" />
+  </head>
+  <body>
+    <!-- backdrop - div to block background from being clicked while forms are active -->
+    <div id="backdrop"></div>
+    <div id="deleteMessage">
+      <div id="delete-mesage-label">Event deleted.</div>
+      <div id="delete-mesage-btn">Close</div>
+    </div>
+    <div id="main-page-wrapper">
+      <!-- eventIndoWindow container for event detail display -->
+      <div id="eventInfoWindow">
+        <div class="infoLineContainer">
+          <div class="infoLabel">Title:</div>
+          <div id="titleInfoField" class="infoContent"></div>
+        </div>
+        <div class="infoLineContainer">
+          <div class="infoLabel">Date:</div>
+          <div id="dateInfoField" class="infoContent"></div>
+        </div>
+        <div class="infoLineContainer">
+          <div class="infoLabel">Starting:</div>
+          <div id="startInfoField" class="infoContent"></div>
+        </div>
+        <div class="infoLineContainer">
+          <div class="infoLabel">Ending:</div>
+          <div id="endInfoField" class="infoContent"></div>
+        </div>
+        <div class="infoLineContainer">
+          <div class="infoLabel">Type:</div>
+          <div id="typeInfoField" class="infoContent"></div>
+        </div>
+        <div class="infoLineContainer">
+          <div class="infoLabel">Description:</div>
+          <div id="descriptionInfoField" class="infoContent"></div>
+        </div>
+        <div id="detail-btn-container">
+          <div id="close-detail-view-btn" class="details-btn">Close</div>
+          <div id="delete-an-event-btn" class="details-btn">Delete</div>
+        </div>
+      </div>
+      <!-- end of eventInfoWindow -->
+
+      <!-- container for new event form -->
+      <div id="new-event-form-container">
+        <div id="event-form-title">Add new event</div>
+        <form id="new-event-form">
+          <label for="event-title" class="input-label">Title:</label>
+          <input
+            required
+            maxlength="50"
+            autocomplete="off"
+            id="event-title"
+            name="event-title"
+            class="input-field"
+            type="text"
+          /><br />
+          <label for="event-date" class="input-label">Date:</label>
+          <input
+            required
+            id="event-date"
+            name="event-date"
+            class="input-field"
+            type="date"
+            min=""
+            max=""
+          /><br />
+          <label for="event-start" class="input-label">Start:</label>
+          <input
+            required
+            id="event-start-input"
+            name="event-start"
+            class="input-field"
+            type="time"
+            onchange="document.getElementById('event-end-input').min=this.value;"
+          /><br />
+          <label for="event-end" class="input-label">End:</label>
+          <input
+            required
+            id="event-end-input"
+            name="event-end"
+            class="input-field"
+            type="time"
+            min="document.getElementById('event-start-input').value"
+          /><br />
+
+          <label for="event-type" class="input-label">Type:</label>
+          <select
+            required
+            id="event-type"
+            name="event-type"
+            class="input-field"
+            form="new-event-form"
+          >
+            <option value="call">A call</option>
+            <option value="meeting">A meeting</option>
+            <option value="out-of-office">Out of office</option>
+          </select>
+          <div id="description-container">
+            <label for="event-description" class="input-label"
+              >Description:</label
+            >
+            <textarea
+              form="new-event-form"
+              id="event-description"
+              class="new-event-text-area"
+            ></textarea>
+          </div>
+          <div id="new-event-buttons-container">
+            <input
+              type="submit"
+              id="new-event-form-add"
+              name="new-event-form-add"
+              value="Add"
+              class="form-button"
+            />
+
+            <button
+              id="new-event-form-cancel"
+              name="new-event-form-cancel"
+              class="form-button"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- end of new-event-form-container -->
+
+      <!-- container for callendar -->
+      <div class="month-view-container">
+        <div id="gridContainer" class="calendar-container grid-container"></div>
+      </div>
+      <!-- end of month-view-container -->
+
+      <!-- container for details and new event button -->
+      <div class="details-view-container">
+        <div id="new-event-button" class="add_new_event_button">
+          Add new event
+        </div>
+        <!-- event list container -->
+        <ul id="event-list-container" class="event_list_container"></ul>
+      </div>
+      <!-- end of details-view-container -->
+    </div>
+  </body>
+</html>
+<script src="javascript/objects/dayObject.js" type="text/javascript"></script>
+<script src="javascript/objects/eventObject.js" type="text/javascript"></script>
+<script src="javascript/utility.js" type="text/javascript"></script>
+<script src="javascript/eventListeners.js" type="text/javascript"></script>
+<script>
+  var date = new Date();
+  var days = getNumberOfDays(date); //number of days in current month
+  var firstWeekDay = getFirstDay(date); //what week day is first month day
+  var month = buildMonthArray(days, firstWeekDay); //create array of day objects
+
+  //if session storage is empty add dummy events
+  if (sessionStorage.length == 0) {
+    prefillDummyEvents(month, 50);
+  }
+  if (sessionStorage.getItem("eventDeleted") == 1) {
+    showBackDrop();
+    document.getElementById("deleteMessage").style.display = "block";
+  } else {
+    hideBackDrop();
+    document.getElementById("deleteMessage").style.display = "none";
+  }
+  setMinEventDateAsToday(); //set min date as today in new event input form
+  setMaxEventDateAsLastDay(); //set max date as last day of this month in new event form
+  addCalendarLabels(); //add labels to callendar view
+  displayCalendar(month); //show callendar
+  clearDaysWithNoEvents(month); //remove event indicators from days that have none
+  markDaysWithEvents(month); //add indicators to days that have events
+  addEventListeners(month); //add event listeners
+
+  if (sessionStorage.getItem("activeDay")) {
+    //if day is sellected in the callendar give it active class and display event list
+    setAsActive();
+    displayEventList();
+  }
+  //Setup done, wait for events
+</script>

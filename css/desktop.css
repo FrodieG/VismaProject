@@ -1,0 +1,350 @@
+:root {
+  --dark-color: rgb(71, 66, 66);
+  --light-color: rgb(240, 238, 238);
+
+  --font-family: Helvetica, sans-serif;
+  --medium-font: 16px;
+  --small-font: 12px;
+
+  --large-padding: 20px;
+  --medium-padding: 10px;
+  --small-padding: 5px;
+
+  --large-margin: 20px;
+  --medium-margin: 10px;
+  --small-margin: 5px;
+
+  /*event color coding*/
+  --event-call: rgb(122, 102, 237);
+  --event-meeting: rgb(74, 240, 113);
+  --event-out_of_office: rgb(245, 210, 115);
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: var(--font);
+  font-size: var(--medium-font);
+  box-sizing: border-box;
+  cursor: default;
+  overflow-anchor: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.month-view-container {
+  height: inherit;
+  width: 30%;
+  color: var(--light-color);
+  float: left;
+  min-width: 250px;
+  background-color: var(--dark-color);
+}
+
+.details-view-container {
+  width: 350px;
+  min-height: 100%;
+  margin-top: 100px;
+  margin-left: var(--large-margin);
+}
+#main-page-wrapper {
+  display: flex;
+  min-height: 100%;
+}
+.add_new_event_button {
+  width: 150px;
+  height: 30px;
+  border: solid var(--dark-color) 1px;
+  margin-bottom: var(--large-margin);
+  text-align: center;
+  padding-top: 5px;
+  transition: 0.05s ease-in-out;
+  user-select: none;
+}
+
+.add_new_event_button:hover {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+.event_list_container {
+  width: 350px;
+  min-height: 200px;
+  list-style: none;
+}
+
+.event_card {
+  width: 350px;
+  height: 25px;
+  border: solid var(--dark-color) 1px;
+  margin-bottom: var(--small-margin);
+  padding-top: 3px;
+  padding-left: 3px;
+}
+
+.call {
+  background-color: var(--event-call);
+}
+
+.call:hover {
+  opacity: 0.5;
+}
+.meeting {
+  background-color: var(--event-meeting);
+}
+
+.meeting:hover {
+  opacity: 0.5;
+}
+
+.out-of-office {
+  background-color: var(--event-out_of_office);
+}
+
+.out-of-office:hover {
+  opacity: 0.5;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  margin-top: 150px;
+  grid-column-gap: var(--small-margin);
+  grid-row-gap: var(--small-margin);
+  user-select: none;
+}
+
+.grid-item {
+  text-align: center;
+  padding-top: 3px;
+  transition: 0.05s ease-in-out;
+}
+
+.grid-item:hover {
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
+
+.label-grid-item {
+  text-align: center;
+  padding-top: 3px;
+}
+
+.active {
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
+
+.hasEvents {
+  border-right: solid red 1px;
+}
+
+#backdrop {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.8);
+  z-index: 10;
+  top: 0%;
+  left: 0%;
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+#new-event-form-container {
+  display: none;
+  position: absolute;
+  padding-top: 10px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  width: 300px;
+  height: 350px;
+  z-index: 11;
+  background-color: var(--light-color);
+}
+#event-form-title {
+  width: 100%;
+  height: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.input-field {
+  width: 180px;
+  border: none;
+  margin-bottom: 5px;
+  outline: none;
+  border: solid var(--dark-color) 1px;
+}
+
+.input-label {
+  width: 100px;
+  text-align: right;
+  display: inline-block;
+  user-select: none;
+}
+
+.new-event-text-area {
+  resize: none;
+  outline: none;
+  width: 180px;
+  height: 100px;
+  border: solid var(--dark-color) 1px;
+}
+
+.form-button {
+  width: 80px;
+  height: 30px;
+  padding-top: 2px;
+  text-align: center;
+  border: solid var(--dark-color) 1px;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  transition: 0.05s ease-in-out;
+}
+
+.form-button:hover {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+#new-event-buttons-container {
+  width: 180px;
+  height: 32px;
+  margin: auto;
+  margin-top: 10px;
+  text-align: center;
+}
+
+#description-container {
+  width: 100%;
+  height: 110px;
+}
+#description-container > label {
+  vertical-align: top;
+}
+
+#eventInfoWindow {
+  display: none;
+  position: fixed;
+  padding-top: 10px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  width: 300px;
+  min-height: 100px;
+  z-index: 11;
+  background-color: var(--light-color);
+}
+
+.infoLineContainer {
+  display: inline-block;
+  width: 100%;
+  min-height: 20px;
+  margin-bottom: 5px;
+}
+
+.infoLineContainer > div {
+  vertical-align: top;
+}
+.infoLabel {
+  text-align: right;
+  width: 100px;
+  display: inline-block;
+  font-weight: bold;
+  padding: 3px;
+  user-select: none;
+}
+
+.infoContent {
+  width: 180px;
+  display: inline-block;
+  min-height: 20px;
+  word-wrap: break-word;
+  border: solid 1px var(--dark-color);
+  padding: 3px;
+}
+
+.details-btn {
+  width: 80px;
+  height: 30px;
+  padding-top: 5px;
+  text-align: center;
+  border: solid var(--dark-color) 1px;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  transition: 0.05s ease-in-out;
+  display: inline-block;
+}
+
+.details-btn:hover {
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
+
+#detail-btn-container {
+  width: 170px;
+  height: 32px;
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+#deleteMessage {
+  display: none;
+  z-index: 11;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  text-align: center;
+  padding-top: 20px;
+  position: fixed;
+  width: 200px;
+  height: 100px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 200px;
+}
+#delete-mesage-label {
+  width: 100px;
+  margin: auto;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#delete-mesage-btn {
+  width: 80px;
+  height: 30px;
+  padding-top: 5px;
+  text-align: center;
+  border: solid var(--dark-color) 1px;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  transition: 0.05s ease-in-out;
+  margin: auto;
+}
+
+#delete-mesage-btn:hover {
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
